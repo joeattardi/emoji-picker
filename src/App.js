@@ -1,3 +1,6 @@
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faBuilding, faFlag, faLightbulb, faSmile } from '@fortawesome/free-regular-svg-icons';
+import { faCat, faCoffee, faFutbol, faMusic } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import 'react-tabs/style/react-tabs.css';
 import { DefaultToast, ToastProvider } from 'react-toast-notifications';
@@ -36,6 +39,8 @@ const CustomToast = ({ children, ...props }) => (
     <ToastBody>{children}</ToastBody>
   </DefaultToast>
 );
+
+library.add(faBuilding, faCat, faCoffee, faFlag, faFutbol, faLightbulb, faMusic, faSmile);
 
 export default function App() {
   return (

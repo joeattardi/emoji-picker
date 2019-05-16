@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { withToastManager } from 'react-toast-notifications';
@@ -30,6 +31,17 @@ const categoryNames = {
   flags: 'Flags'
 };
 
+const categoryIcons = {
+  people: ['far', 'smile'],
+  animals_and_nature: 'cat',
+  food_and_drink: 'coffee',
+  activity: 'futbol',
+  travel_and_places: ['far', 'building'],
+  objects: ['far', 'lightbulb'],
+  symbols: 'music',
+  flags: ['far', 'flag']
+};
+
 class EmojiList extends React.Component {
   constructor(props) {
     super(props);
@@ -54,7 +66,9 @@ class EmojiList extends React.Component {
         <Tabs>
           <TabList>
             {Object.keys(categoryNames).map(category => (
-              <Tab onClick={this.resetTooltip} key={category}>{categoryNames[category]}</Tab>
+              <Tab onClick={this.resetTooltip} key={category}>
+                <FontAwesomeIcon icon={categoryIcons[category]} /> {categoryNames[category]}
+              </Tab>
             ))}
           </TabList>
           {Object.keys(categoryNames).map(category => (
