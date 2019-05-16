@@ -1,26 +1,39 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import styled, { createGlobalStyle } from 'styled-components';
 
-function App() {
+import EmojiList from './EmojiList';
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+  }
+`;
+
+const Header = styled.header`
+  background: #666666;
+  color: #FFFFFF;
+  padding: 0.5em;
+
+  h1 {
+    margin: 0;
+  }
+`;
+
+const Main = styled.main`
+  padding: 0.5em;
+`;
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <GlobalStyle />
+      <Header>
+        <h1><span role="img" aria-label="Smiley face">😀</span> Emoji Picker</h1>
+      </Header>
+      <Main>
+        <EmojiList />
+      </Main>
     </div>
   );
 }
-
-export default App;
