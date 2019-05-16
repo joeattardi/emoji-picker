@@ -1,8 +1,9 @@
 import { lib } from 'emojilib';
 import React from 'react';
+import Clipboard from 'react-clipboard.js';
 import styled from 'styled-components';
 
-const EmojiButton = styled.button`
+const EmojiButton = styled(Clipboard)`
   cursor: pointer;
   background: transparent;
   border: none;
@@ -11,10 +12,8 @@ const EmojiButton = styled.button`
 
 export default function Emoji({ emoji }) {
   return (
-    <>
-      <EmojiButton data-tip={emoji}>
-        {lib[emoji].char}
-      </EmojiButton>
-    </>
+    <EmojiButton data-clipboard-text={lib[emoji].char} data-tip={emoji}>
+      {lib[emoji].char}
+    </EmojiButton>
   );
 }
