@@ -16,7 +16,12 @@ export default function EmojiCategory({ name, emojis, onCopy }) {
     <Container>
       <Heading>{name}</Heading>
       <div>
-        {emojis.map(emoji => <Emoji emoji={emoji} key={emoji} onCopy={emoji => onCopy(emoji)} />)}
+        {emojis.map(emoji => (
+          <Emoji
+            emoji={emoji}
+            key={emoji}
+            onCopy={emoji => onCopy(emoji)} />
+        ))}
       </div>
     </Container>
   );

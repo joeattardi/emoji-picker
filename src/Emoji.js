@@ -12,7 +12,10 @@ const EmojiButton = styled(Clipboard)`
 
 export default function Emoji({ emoji, onCopy }) {
   return (
-    <EmojiButton data-clipboard-text={lib[emoji].char} data-tip={emoji} onClick={() => onCopy(emoji)}>
+    <EmojiButton
+      data-clipboard-text={lib[emoji].char}
+      data-tip={emoji}
+      onClick={() => onCopy(emoji)}>
       {lib[emoji].char}
     </EmojiButton>
   );

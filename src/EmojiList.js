@@ -45,7 +45,13 @@ class EmojiList extends React.Component {
   render() {
     return (
       <div>
-        {Object.keys(categoryNames).map(category => <EmojiCategory name={categoryNames[category]} emojis={emojiCategories[category]} key={category} onCopy={this.showToast} />)}
+        {Object.keys(categoryNames).map(category => (
+          <EmojiCategory
+            name={categoryNames[category]}
+            emojis={emojiCategories[category]}
+            key={category}
+            onCopy={this.showToast} />
+        ))}
       </div>
     );
   }
