@@ -8,6 +8,7 @@
     "react-clipboard.js": "^2.0.7",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1",
+    "react-toast-notifications": "^1.4.0",
     "react-tooltip": "^3.10.0",
     "styled-components": "^4.2.0"
   },

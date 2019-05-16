@@ -1,4 +1,5 @@
 import React from 'react';
+import { withToastManager } from 'react-toast-notifications';
 import { lib } from 'emojilib';
 
 import EmojiCategory from './EmojiCategory';
@@ -27,10 +28,27 @@ const categoryNames = {
   flags: 'Flags'
 };
 
-export default function EmojiList() {
-  return (
-    <div>
-      {Object.keys(categoryNames).map(category => <EmojiCategory name={categoryNames[category]} emojis={emojiCategories[category]} key={category} />)}
-    </div>
-  );
+class EmojiList extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.showToast = this.showToast.bind(this);
+  }
+
+  showToast(emoji) {
+    this.props.toastManager.add(`Copied ${lib[emoji].char} to clipboard!`, { 
+      appearance: 'success',
+      autoDismiss: true
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        {Object.keys(categoryNames).map(category => <EmojiCategory name={categoryNames[category]} emojis={emojiCategories[category]} key={category} onCopy={this.showToast} />)}
+      </div>
+    );
+  }
 }
+
+export default withToastManager(EmojiList);

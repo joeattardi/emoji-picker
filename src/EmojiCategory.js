@@ -11,12 +11,12 @@ const Container = styled.div`
   margin-bottom: 1em;
 `;
 
-export default function EmojiCategory({ name, emojis }) {
+export default function EmojiCategory({ name, emojis, onCopy }) {
   return (
     <Container>
       <Heading>{name}</Heading>
       <div>
-        {emojis.map(emoji => <Emoji emoji={emoji} key={emoji} />)}
+        {emojis.map(emoji => <Emoji emoji={emoji} key={emoji} onCopy={emoji => onCopy(emoji)} />)}
       </div>
     </Container>
   );

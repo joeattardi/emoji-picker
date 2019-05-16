@@ -10,9 +10,9 @@ const EmojiButton = styled(Clipboard)`
   font-size: 1.5em;
 `;
 
-export default function Emoji({ emoji }) {
+export default function Emoji({ emoji, onCopy }) {
   return (
-    <EmojiButton data-clipboard-text={lib[emoji].char} data-tip={emoji}>
+    <EmojiButton data-clipboard-text={lib[emoji].char} data-tip={emoji} onClick={() => onCopy(emoji)}>
       {lib[emoji].char}
     </EmojiButton>
   );
