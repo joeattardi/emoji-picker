@@ -11,8 +11,10 @@ const EmojiButton = styled.button`
 
 export default function Emoji({ emoji }) {
   return (
-    <EmojiButton>
-      {lib[emoji].char}
-    </EmojiButton>
+    <>
+      <EmojiButton data-tip={emoji}>
+        {lib[emoji].char}
+      </EmojiButton>
+    </>
   );
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactTooltip from 'react-tooltip';
 import styled, { createGlobalStyle } from 'styled-components';
 
 import EmojiList from './EmojiList';
@@ -28,6 +29,7 @@ export default function App() {
   return (
     <div>
       <GlobalStyle />
+      <ReactTooltip effect="solid" />
       <Header>
         <h1><span role="img" aria-label="Smiley face">😀</span> Emoji Picker</h1>
       </Header>
