@@ -1,5 +1,7 @@
 import React from 'react';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { withToastManager } from 'react-toast-notifications';
+import ReactTooltip from 'react-tooltip';
 import { lib } from 'emojilib';
 
 import EmojiCategory from './EmojiCategory';
@@ -42,16 +44,28 @@ class EmojiList extends React.Component {
     });
   }
 
+  resetTooltip() {
+    setTimeout(() => ReactTooltip.rebuild());
+  }
+
   render() {
     return (
       <div>
-        {Object.keys(categoryNames).map(category => (
-          <EmojiCategory
-            name={categoryNames[category]}
-            emojis={emojiCategories[category]}
-            key={category}
-            onCopy={this.showToast} />
-        ))}
+        <Tabs>
+          <TabList>
+            {Object.keys(categoryNames).map(category => (
+              <Tab onClick={this.resetTooltip} key={category}>{categoryNames[category]}</Tab>
+            ))}
+          </TabList>
+          {Object.keys(categoryNames).map(category => (
+            <TabPanel key={category}>
+              <EmojiCategory
+                name={categoryNames[category]}
+                emojis={emojiCategories[category]}
+                onCopy={this.showToast} />
+            </TabPanel>
+          ))}
+        </Tabs>
       </div>
     );
   }

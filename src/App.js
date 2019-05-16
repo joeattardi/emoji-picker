@@ -1,4 +1,5 @@
 import React from 'react';
+import 'react-tabs/style/react-tabs.css';
 import { DefaultToast, ToastProvider } from 'react-toast-notifications';
 import ReactTooltip from 'react-tooltip';
 import styled, { createGlobalStyle } from 'styled-components';
@@ -39,9 +40,9 @@ const CustomToast = ({ children, ...props }) => (
 export default function App() {
   return (
     <ToastProvider placement="top-center" autoDismissTimeout={2000} components={{ Toast: CustomToast }}>
+      <ReactTooltip effect="solid" />
       <div>
         <GlobalStyle />
-        <ReactTooltip effect="solid" />
         <Header>
           <h1><span role="img" aria-label="Smiley face">😀</span> Emoji Picker</h1>
         </Header>
