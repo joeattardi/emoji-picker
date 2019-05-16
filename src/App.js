@@ -1,6 +1,7 @@
-import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBuilding, faFlag, faLightbulb, faSmile } from '@fortawesome/free-regular-svg-icons';
 import { faCat, faCoffee, faFutbol, faMusic } from '@fortawesome/free-solid-svg-icons';
+import { library } from '@fortawesome/fontawesome-svg-core';
 import React from 'react';
 import 'react-tabs/style/react-tabs.css';
 import { DefaultToast, ToastProvider } from 'react-toast-notifications';
@@ -49,7 +50,7 @@ export default function App() {
       <div>
         <GlobalStyle />
         <Header>
-          <h1><span role="img" aria-label="Smiley face">😀</span> Emoji Picker</h1>
+          <h1><FontAwesomeIcon icon={['far', 'smile']} /> Emoji Picker</h1>
         </Header>
         <Main>
           <EmojiList />

@@ -8,6 +8,11 @@ const EmojiButton = styled(Clipboard)`
   background: transparent;
   border: none;
   font-size: 1.5em;
+  transition: transform 0.1s;
+
+  &:hover {
+    transform: scale(1.5);
+  }
 `;
 
 export default function Emoji({ emoji, onCopy }) {
