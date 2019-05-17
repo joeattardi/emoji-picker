@@ -19,7 +19,7 @@ class EmojiSearchResults extends React.Component {
   }
 
   render() {
-    const searchResults = ordered.filter(name => name.indexOf(this.props.searchQuery) >= 0);
+    const searchResults = ordered.filter(name => name.indexOf(this.props.searchQuery.toLowerCase()) >= 0);
 
     return (
       <div>
