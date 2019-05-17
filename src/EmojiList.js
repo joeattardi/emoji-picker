@@ -50,7 +50,7 @@ class EmojiList extends React.Component {
   }
 
   showToast(emoji) {
-    this.props.toastManager.add(`Copied ${lib[emoji].char} to clipboard!`, { 
+    this.props.toastManager.add(`Copied ${emoji} to clipboard!`, { 
       appearance: 'success',
       autoDismiss: true
     });
