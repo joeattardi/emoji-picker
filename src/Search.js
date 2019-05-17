@@ -11,6 +11,7 @@ const SearchInput = styled.input.attrs({
 })`
   font-size: 1.5em;
   width: 22em;
+  max-width: calc(100% - 1em);
   padding: 0.5em;
   border: 1px solid #999999;
   border-radius: 5px;
