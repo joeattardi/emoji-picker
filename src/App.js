@@ -4,7 +4,7 @@ import { faCat, faCoffee, faFutbol, faMusic } from '@fortawesome/free-solid-svg-
 import { library } from '@fortawesome/fontawesome-svg-core';
 import React from 'react';
 import 'react-tabs/style/react-tabs.css';
-import { DefaultToast, ToastProvider, withToastManager } from 'react-toast-notifications';
+import { DefaultToast, ToastProvider } from 'react-toast-notifications';
 import ReactTooltip from 'react-tooltip';
 import styled, { createGlobalStyle } from 'styled-components';
 
