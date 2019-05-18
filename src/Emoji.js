@@ -9,6 +9,7 @@ const EmojiButton = styled(Clipboard)`
   border: none;
   font-size: 1.5em;
   transition: transform 0.1s;
+  padding: 0.25em;
 
   &:hover {
     transform: scale(1.5);

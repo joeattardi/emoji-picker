@@ -69,6 +69,29 @@ class EmojiList extends React.Component {
     setTimeout(() => ReactTooltip.rebuild());
   }
 
+  renderRecents() {
+    return (
+      <div>
+        <button onClick={this.props.onClearRecent}>
+          <FontAwesomeIcon icon="trash" /> Clear Recent Emojis
+        </button>
+        <EmojiCategory
+          name="Recent"
+          emojis={this.props.recent}
+          onCopy={emoji => this.onCopy(emoji, false)} />
+      </div>
+    );
+  }
+
+  renderEmptyRecents() {
+    return (
+      <div>
+        <h2>No recent emojis.</h2>
+        <p>Emojis will be added here as you copy them.</p>
+      </div>
+    );
+  }
+
   render() {
     return (
       <div>
@@ -84,10 +107,7 @@ class EmojiList extends React.Component {
             ))}
           </TabList>
           <TabPanel>
-            <EmojiCategory
-              name="Recent"
-              emojis={this.props.recent}
-              onCopy={emoji => this.onCopy(emoji, false)} />
+            {this.props.recent.length ? this.renderRecents() : this.renderEmptyRecents()}
           </TabPanel>
           {Object.keys(categoryNames).map(category => (
             <TabPanel key={category}>

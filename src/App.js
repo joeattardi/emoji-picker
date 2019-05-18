@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBuilding, faClock, faFlag, faLightbulb, faSmile } from '@fortawesome/free-regular-svg-icons';
-import { faCat, faCoffee, faFutbol, faMusic } from '@fortawesome/free-solid-svg-icons';
+import { faCat, faCoffee, faFutbol, faMusic, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import React from 'react';
 import 'react-tabs/style/react-tabs.css';
@@ -13,11 +13,23 @@ import EmojiSearchResults from './EmojiSearchResults';
 import Search from './Search';
 
 const RECENT_LENGTH = 25;
+const RECENT_KEY = 'recentEmojis';
 
 const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
+  }
+
+  button {
+    background: #9FB7DF;
+    padding: 0.5em;
+    font-size: 0.8em;
+    border-radius: 3px;
+    cursor: pointer;
+    font-weight: bold;
+    border: none;
+    color: #FFFFFF;
   }
 `;
 
@@ -56,7 +68,7 @@ const CustomToast = ({ children }) => (
   </ToastBody>
 );
 
-library.add(faBuilding, faCat, faClock, faCoffee, faFlag, faFutbol, faLightbulb, faMusic, faSmile);
+library.add(faBuilding, faCat, faClock, faCoffee, faFlag, faFutbol, faLightbulb, faMusic, faSmile, faTrash);
 
 export default class App extends React.Component {
   constructor(props) {
@@ -67,10 +79,32 @@ export default class App extends React.Component {
       recent: []
     };
 
+    this.clearRecent = this.clearRecent.bind(this);
     this.doSearch = this.doSearch.bind(this);
     this.onCopy = this.onCopy.bind(this);
   }
 
+  componentDidMount() {
+    try {
+      const savedRecents = JSON.parse(localStorage.getItem(RECENT_KEY));
+      if (savedRecents) {
+        this.setState({
+          recent: savedRecents
+        });
+      }
+    } catch (e) {}
+
+    window.addEventListener('beforeunload', () => {
+      localStorage.setItem(RECENT_KEY, JSON.stringify(this.state.recent));
+    });
+  }
+
+  clearRecent() {
+    this.setState({
+      recent: []
+    });
+  }
+  
   onCopy(emoji) {
     this.setState({
       recent: [
@@ -104,7 +138,7 @@ export default class App extends React.Component {
             <Instructions>
               Click on an emoji to copy it to the clipboard.
             </Instructions>
-            {this.state.search ? <EmojiSearchResults searchQuery={this.state.search} onCopy={this.onCopy} /> : <EmojiList onCopy={this.onCopy} recent={this.state.recent} />}
+            {this.state.search ? <EmojiSearchResults searchQuery={this.state.search} onCopy={this.onCopy} /> : <EmojiList onCopy={this.onCopy} recent={this.state.recent} onClearRecent={this.clearRecent} />}
           </Main>
         </div>
       </ToastProvider>
