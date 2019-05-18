@@ -1,16 +1,18 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBuilding, faFlag, faLightbulb, faSmile } from '@fortawesome/free-regular-svg-icons';
+import { faBuilding, faClock, faFlag, faLightbulb, faSmile } from '@fortawesome/free-regular-svg-icons';
 import { faCat, faCoffee, faFutbol, faMusic } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import React from 'react';
 import 'react-tabs/style/react-tabs.css';
-import { DefaultToast, ToastProvider } from 'react-toast-notifications';
+import { ToastProvider } from 'react-toast-notifications';
 import ReactTooltip from 'react-tooltip';
 import styled, { createGlobalStyle } from 'styled-components';
 
 import EmojiList from './EmojiList';
 import EmojiSearchResults from './EmojiSearchResults';
 import Search from './Search';
+
+const RECENT_LENGTH = 25;
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -54,17 +56,28 @@ const CustomToast = ({ children }) => (
   </ToastBody>
 );
 
-library.add(faBuilding, faCat, faCoffee, faFlag, faFutbol, faLightbulb, faMusic, faSmile);
+library.add(faBuilding, faCat, faClock, faCoffee, faFlag, faFutbol, faLightbulb, faMusic, faSmile);
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      search: ''
+      search: '',
+      recent: []
     };
 
     this.doSearch = this.doSearch.bind(this);
+    this.onCopy = this.onCopy.bind(this);
+  }
+
+  onCopy(emoji) {
+    this.setState({
+      recent: [
+        emoji,
+        ...this.state.recent.filter(e => e !== emoji)
+      ].slice(0, RECENT_LENGTH)
+    });
   }
 
   doSearch(searchQuery) {
@@ -91,7 +104,7 @@ export default class App extends React.Component {
             <Instructions>
               Click on an emoji to copy it to the clipboard.
             </Instructions>
-            {this.state.search ? <EmojiSearchResults searchQuery={this.state.search} /> : <EmojiList />}
+            {this.state.search ? <EmojiSearchResults searchQuery={this.state.search} onCopy={this.onCopy} /> : <EmojiList onCopy={this.onCopy} recent={this.state.recent} />}
           </Main>
         </div>
       </ToastProvider>

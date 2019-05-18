@@ -20,7 +20,7 @@ export default function Emoji({ emoji, onCopy }) {
     <EmojiButton
       data-clipboard-text={lib[emoji].char}
       data-tip={emoji}
-      onClick={() => onCopy(lib[emoji].char)}>
+      onClick={() => onCopy(emoji)}>
       {lib[emoji].char}
     </EmojiButton>
   );

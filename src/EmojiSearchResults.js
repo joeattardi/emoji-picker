@@ -1,4 +1,4 @@
-import { ordered } from 'emojilib';
+import { lib, ordered } from 'emojilib';
 import React from 'react';
 import { withToastManager } from 'react-toast-notifications';
 
@@ -8,11 +8,12 @@ class EmojiSearchResults extends React.Component {
   constructor(props) {
     super(props);
 
-    this.showToast = this.showToast.bind(this);
+    this.onCopy = this.onCopy.bind(this);
   }
 
-  showToast(emoji) {
-    this.props.toastManager.add(`${emoji} copied to clipboard!`, { 
+  onCopy(emoji) {
+    this.props.onCopy(emoji);
+    this.props.toastManager.add(`${lib[emoji].char} copied to clipboard!`, { 
       appearance: 'success',
       autoDismiss: true
     });
@@ -24,7 +25,7 @@ class EmojiSearchResults extends React.Component {
     return (
       <div>
         {searchResults.map(emojiName => (
-          <Emoji key={emojiName} emoji={emojiName} onCopy={this.showToast} />
+          <Emoji key={emojiName} emoji={emojiName} onCopy={this.onCopy} />
         ))}
       </div>
     );

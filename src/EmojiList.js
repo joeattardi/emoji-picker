@@ -46,11 +46,20 @@ class EmojiList extends React.Component {
   constructor(props) {
     super(props);
 
+    this.onCopy = this.onCopy.bind(this);
     this.showToast = this.showToast.bind(this);
   }
 
+  onCopy(emoji, propagate = true) {
+    this.showToast(emoji);
+
+    if (propagate) {
+      this.props.onCopy(emoji);
+    }
+  }
+
   showToast(emoji) {
-    this.props.toastManager.add(`${emoji} copied to clipboard!`, { 
+    this.props.toastManager.add(`${lib[emoji].char} copied to clipboard!`, { 
       appearance: 'success',
       autoDismiss: true
     });
@@ -63,20 +72,29 @@ class EmojiList extends React.Component {
   render() {
     return (
       <div>
-        <Tabs>
+        <Tabs defaultIndex={1}>
           <TabList>
+            <Tab onClick={this.resetTooltip}>
+              <FontAwesomeIcon icon={['far', 'clock']} /> Recent
+            </Tab>
             {Object.keys(categoryNames).map(category => (
               <Tab onClick={this.resetTooltip} key={category}>
                 <FontAwesomeIcon icon={categoryIcons[category]} /> {categoryNames[category]}
               </Tab>
             ))}
           </TabList>
+          <TabPanel>
+            <EmojiCategory
+              name="Recent"
+              emojis={this.props.recent}
+              onCopy={emoji => this.onCopy(emoji, false)} />
+          </TabPanel>
           {Object.keys(categoryNames).map(category => (
             <TabPanel key={category}>
               <EmojiCategory
                 name={categoryNames[category]}
                 emojis={emojiCategories[category]}
-                onCopy={this.showToast} />
+                onCopy={this.onCopy} />
             </TabPanel>
           ))}
         </Tabs>
