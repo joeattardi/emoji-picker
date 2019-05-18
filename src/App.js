@@ -41,12 +41,17 @@ const Instructions = styled.div`
 
 const ToastBody = styled.div`
   font-size: 1.5em;
+  padding: 0.5em;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.6);
+  margin: 0.25em;
+  color: #FFFFFF;
 `;
 
-const CustomToast = ({ children, ...props }) => (
-  <DefaultToast {...props}>
-    <ToastBody>{children}</ToastBody>
-  </DefaultToast>
+const CustomToast = ({ children }) => (
+  <ToastBody>
+    {children}
+  </ToastBody>
 );
 
 library.add(faBuilding, faCat, faCoffee, faFlag, faFutbol, faLightbulb, faMusic, faSmile);
