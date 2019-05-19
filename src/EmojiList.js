@@ -17,7 +17,7 @@ Object.keys(lib).forEach(emojiName => {
     categoryList = emojiCategories[emoji.category] = [];
   }
 
-  categoryList.push(emojiName);
+  categoryList.push({emoji: emojiName});
 });
 
 const categoryNames = {
@@ -50,16 +50,16 @@ class EmojiList extends React.Component {
     this.showToast = this.showToast.bind(this);
   }
 
-  onCopy(emoji, propagate = true) {
-    this.showToast(emoji);
+  onCopy(emoji, modifier, propagate = true) {
+    this.showToast(emoji, modifier);
 
     if (propagate) {
-      this.props.onCopy(emoji);
+      this.props.onCopy(emoji, modifier);
     }
   }
 
-  showToast(emoji) {
-    this.props.toastManager.add(`${lib[emoji].char} copied to clipboard!`, { 
+  showToast(emoji, modifier) {
+    this.props.toastManager.add(`${modifier ? lib[emoji].char + modifier : lib[emoji].char} copied to clipboard!`, { 
       appearance: 'success',
       autoDismiss: true
     });
@@ -78,7 +78,7 @@ class EmojiList extends React.Component {
         <EmojiCategory
           name="Recent"
           emojis={this.props.recent}
-          onCopy={emoji => this.onCopy(emoji, false)} />
+          onCopy={(emoji, modifier) => this.onCopy(emoji, modifier, false)} />
       </div>
     );
   }
@@ -114,6 +114,7 @@ class EmojiList extends React.Component {
               <EmojiCategory
                 name={categoryNames[category]}
                 emojis={emojiCategories[category]}
+                showModifiers={true}
                 onCopy={this.onCopy} />
             </TabPanel>
           ))}

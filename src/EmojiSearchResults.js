@@ -11,9 +11,9 @@ class EmojiSearchResults extends React.Component {
     this.onCopy = this.onCopy.bind(this);
   }
 
-  onCopy(emoji) {
-    this.props.onCopy(emoji);
-    this.props.toastManager.add(`${lib[emoji].char} copied to clipboard!`, { 
+  onCopy(emoji, modifier) {
+    this.props.onCopy(emoji, modifier);
+    this.props.toastManager.add(`${modifier ? lib[emoji].char + modifier : lib[emoji].char} copied to clipboard!`, { 
       appearance: 'success',
       autoDismiss: true
     });
@@ -25,7 +25,7 @@ class EmojiSearchResults extends React.Component {
     return (
       <div>
         {searchResults.map(emojiName => (
-          <Emoji key={emojiName} emoji={emojiName} onCopy={this.onCopy} />
+          <Emoji key={emojiName} emoji={{emoji: emojiName}} onCopy={this.onCopy} showModifiers={true} />
         ))}
       </div>
     );

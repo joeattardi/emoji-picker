@@ -19,6 +19,7 @@
     "react-tabs": "^3.0.0",
     "react-toast-notifications": "^1.4.0",
     "react-tooltip": "^3.10.0",
+    "reactjs-popup": "^1.4.0",
     "styled-components": "^4.2.0"
   },
   "scripts": {

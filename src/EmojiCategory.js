@@ -1,14 +1,15 @@
 import React from 'react';
 import Emoji from './Emoji';
 
-export default function EmojiCategory({ name, emojis, onCopy }) {
+export default function EmojiCategory({ name, emojis, onCopy, showModifiers }) {
   return (
       <div>
         {emojis.map(emoji => (
           <Emoji
             emoji={emoji}
-            key={emoji}
-            onCopy={emoji => onCopy(emoji)} />
+            showModifiers={showModifiers}
+            key={emoji.modifier ? `${emoji.emoji}-${emoji.modifier}` : emoji.emoji}
+            onCopy={onCopy} />
         ))}
       </div>
   );
