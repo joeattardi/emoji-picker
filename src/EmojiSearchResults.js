@@ -1,6 +1,7 @@
-import emojiData from './emojiData';
 import React from 'react';
 import { withToastManager } from 'react-toast-notifications';
+
+import emojiData from './data/emoji.json';
 
 import Emoji from './Emoji';
 

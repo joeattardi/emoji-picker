@@ -23,7 +23,9 @@
     "styled-components": "^4.2.0"
   },
   "scripts": {
+    "prestart": "node scripts/processEmojiData.js",
     "start": "react-scripts start",
+    "prebuild": "node scripts/processEmojiData.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

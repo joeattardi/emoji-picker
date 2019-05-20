@@ -4,7 +4,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { withToastManager } from 'react-toast-notifications';
 import ReactTooltip from 'react-tooltip';
 
-import emojiData from './emojiData';
+import emojiData from './data/emoji.json';
 
 import EmojiCategory from './EmojiCategory';
 
