@@ -4,11 +4,9 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { withToastManager } from 'react-toast-notifications';
 import ReactTooltip from 'react-tooltip';
 
-import emojiData from 'emoji-datasource';
+import emojiData from './emojiData';
 
 import EmojiCategory from './EmojiCategory';
-
-emojiData.sort((e1, e2) => e1.sort_order - e2.sort_order);
 
 const emojiCategories = {};
 
@@ -19,14 +17,6 @@ emojiData.forEach(emoji => {
   }
 
   categoryList.push(emoji);
-
-  emoji.key = emoji.short_name;
-  if (emoji.skin_variations) {
-    Object.keys(emoji.skin_variations).forEach(variation => {
-      emoji.skin_variations[variation].short_name = emoji.short_name;
-      emoji.skin_variations[variation].key = `${emoji.short_name}-${variation}`;
-    });
-  }
 });
 
 const categoryOrder = [
@@ -80,8 +70,8 @@ class EmojiList extends React.Component {
 
   renderRecents() {
     const recents = this.props.recent.map(recent => {
-      const recentEmoji = emojiData.find(data => data.short_name === recent.name);
-      return recent.variation ? recentEmoji.skin_variations[recent.variation] : recentEmoji;
+      const recentEmoji = emojiData.find(data => data.name === recent.name);
+      return recent.variation ? recentEmoji.variants.find(variant => variant.variation === recent.variation) : recentEmoji;
     });
 
     return (

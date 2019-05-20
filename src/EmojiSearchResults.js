@@ -1,4 +1,4 @@
-import emojiData from 'emoji-datasource';
+import emojiData from './emojiData';
 import React from 'react';
 import { withToastManager } from 'react-toast-notifications';
 
@@ -22,8 +22,8 @@ class EmojiSearchResults extends React.Component {
   render() {
     const searchTerm = this.props.searchQuery.toLowerCase();
     const searchResults = emojiData.filter(emoji => (
-      emoji.short_name.indexOf(searchTerm) >= 0 ||
-        emoji.short_names.find(short_name => short_name.indexOf(searchTerm) >= 0)
+      emoji.name.indexOf(searchTerm) >= 0 ||
+        emoji.names.find(name => name.indexOf(searchTerm) >= 0)
     ));
 
     return (

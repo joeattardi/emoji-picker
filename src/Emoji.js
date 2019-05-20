@@ -52,12 +52,12 @@ export default class Emoji extends React.Component {
   }
 
   onClickBaseEmoji(emoji, variation, charSequence) {
-    if (emoji.skin_variations && this.props.showModifiers) {
+    if (emoji.variants && this.props.showModifiers) {
       this.setState({
         showPopup: true
       });
     } else {
-      this.props.onCopy(emoji.short_name, variation, charSequence);
+      this.props.onCopy(emoji.name, variation, charSequence);
     }
   }
 
@@ -66,7 +66,7 @@ export default class Emoji extends React.Component {
       showPopup: false
     });
 
-    this.props.onCopy(emoji.short_name, variation, charSequence);
+    this.props.onCopy(emoji.name, variation, charSequence);
   }
 
   hidePopup() {
@@ -91,12 +91,12 @@ export default class Emoji extends React.Component {
             onClick={() => this.onClickVariation(emoji, null, charSequence)}>
             {charSequence}
           </EmojiButton>
-          {Object.keys(emoji.skin_variations).map(variation => (
+          {emoji.variants.map(variant => (
             <EmojiButton
-              key={`${emoji.short_name}-${variation}`}
-              data-clipboard-text={this.getCharSequence(emoji.skin_variations[variation])}
-              onClick={() => this.onClickVariation(emoji, variation, this.getCharSequence(emoji.skin_variations[variation]))}>
-              {this.getCharSequence(emoji.skin_variations[variation])}
+              key={variant.key}
+              data-clipboard-text={this.getCharSequence(variant)}
+              onClick={() => this.onClickVariation(emoji, variant.variation, this.getCharSequence(variant))}>
+              {this.getCharSequence(variant)}
             </EmojiButton>
           ))}
         </div>
@@ -113,11 +113,11 @@ export default class Emoji extends React.Component {
       <>
         <EmojiButton
           data-clipboard-text={charSequence}
-          data-tip={emoji.short_name}
+          data-tip={emoji.name}
           onClick={() => this.onClickBaseEmoji(emoji, null, charSequence)}>
           {charSequence}
         </EmojiButton>
-        {emoji.skin_variations ? this.renderPopup(emoji, charSequence) : null}
+        {emoji.variants ? this.renderPopup(emoji, charSequence) : null}
       </>
     );
   }
