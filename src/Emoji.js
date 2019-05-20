@@ -3,7 +3,11 @@ import Popup from 'reactjs-popup'
 import Clipboard from 'react-clipboard.js';
 import styled from 'styled-components';
 
-const EmojiButton = styled(Clipboard)`
+const EmojiButton = styled(Clipboard).attrs({
+  component: 'a'
+})`
+  display: inline-block;
+  width: 1em;
   cursor: pointer;
   background: transparent;
   border: none;
