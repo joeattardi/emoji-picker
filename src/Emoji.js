@@ -7,12 +7,13 @@ const EmojiButton = styled(Clipboard)`
   cursor: pointer;
   background: transparent;
   border: none;
-  font-size: 1.5em;
+  font-size: 2em;
   transition: transform 0.1s;
-  padding: 0.25em;
+  padding: 0;
+  margin: 0 0.25em 0.25em 0.25em;
 
   &:hover {
-    transform: scale(1.5);
+    transform: scale(2);
   }
 `;
 
@@ -20,6 +21,7 @@ const PopupHeader = styled.h2`
   margin: 0;
   font-size: 1em;
   text-align: center;
+  margin-bottom: 1em;
 `;
 
 export default class Emoji extends React.Component {
@@ -104,7 +106,7 @@ export default class Emoji extends React.Component {
     const charSequence = this.getCharSequence(emoji);
 
     return (
-      <span>
+      <>
         <EmojiButton
           data-clipboard-text={charSequence}
           data-tip={emoji.short_name}
@@ -112,7 +114,7 @@ export default class Emoji extends React.Component {
           {charSequence}
         </EmojiButton>
         {emoji.skin_variations ? this.renderPopup(emoji, charSequence) : null}
-      </span>
+      </>
     );
   }
 }
