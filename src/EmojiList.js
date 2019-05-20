@@ -3,43 +3,52 @@ import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { withToastManager } from 'react-toast-notifications';
 import ReactTooltip from 'react-tooltip';
-import { lib } from 'emojilib';
+
+import emojiData from 'emoji-datasource';
 
 import EmojiCategory from './EmojiCategory';
 
+emojiData.sort((e1, e2) => e1.sort_order - e2.sort_order);
+
 const emojiCategories = {};
 
-Object.keys(lib).forEach(emojiName => {
-  const emoji = lib[emojiName];
-
+emojiData.forEach(emoji => {
   let categoryList = emojiCategories[emoji.category];
   if (!categoryList) {
     categoryList = emojiCategories[emoji.category] = [];
   }
 
-  categoryList.push({emoji: emojiName});
+  categoryList.push(emoji);
+
+  emoji.key = emoji.short_name;
+  if (emoji.skin_variations) {
+    Object.keys(emoji.skin_variations).forEach(variation => {
+      emoji.skin_variations[variation].short_name = emoji.short_name;
+      emoji.skin_variations[variation].key = `${emoji.short_name}-${variation}`;
+    });
+  }
 });
 
-const categoryNames = {
-  people: 'Smileys & People',
-  animals_and_nature: 'Animals & Nature',
-  food_and_drink: 'Food & Drink',
-  activity: 'Activity',
-  travel_and_places: 'Travel and Places',
-  objects: 'Objects',
-  symbols: 'Symbols',
-  flags: 'Flags'
-};
+const categoryOrder = [
+  'Smileys & People',
+  'Animals & Nature',
+  'Food & Drink',
+  'Activities',
+  'Travel & Places',
+  'Objects',
+  'Symbols',
+  'Flags'
+];
 
 const categoryIcons = {
-  people: ['far', 'smile'],
-  animals_and_nature: 'cat',
-  food_and_drink: 'coffee',
-  activity: 'futbol',
-  travel_and_places: ['far', 'building'],
-  objects: ['far', 'lightbulb'],
-  symbols: 'music',
-  flags: ['far', 'flag']
+  'Smileys & People': ['far', 'smile'],
+  'Animals & Nature': 'cat',
+  'Food & Drink': 'coffee',
+  'Activities': 'futbol',
+  'Travel & Places': ['far', 'building'],
+  'Objects': ['far', 'lightbulb'],
+  'Symbols': 'music',
+  'Flags': ['far', 'flag']
 };
 
 class EmojiList extends React.Component {
@@ -50,16 +59,16 @@ class EmojiList extends React.Component {
     this.showToast = this.showToast.bind(this);
   }
 
-  onCopy(emoji, modifier, propagate = true) {
-    this.showToast(emoji, modifier);
+  onCopy(name, variation, emoji, propagate = true) {
+    this.showToast(emoji);
 
     if (propagate) {
-      this.props.onCopy(emoji, modifier);
+      this.props.onCopy(name, variation, emoji);
     }
   }
 
-  showToast(emoji, modifier) {
-    this.props.toastManager.add(`${modifier ? lib[emoji].char + modifier : lib[emoji].char} copied to clipboard!`, { 
+  showToast(emoji) {
+    this.props.toastManager.add(`${emoji} copied to clipboard!`, { 
       appearance: 'success',
       autoDismiss: true
     });
@@ -70,6 +79,11 @@ class EmojiList extends React.Component {
   }
 
   renderRecents() {
+    const recents = this.props.recent.map(recent => {
+      const recentEmoji = emojiData.find(data => data.short_name === recent.name);
+      return recent.variation ? recentEmoji.skin_variations[recent.variation] : recentEmoji;
+    });
+
     return (
       <div>
         <button onClick={this.props.onClearRecent}>
@@ -77,8 +91,8 @@ class EmojiList extends React.Component {
         </button>
         <EmojiCategory
           name="Recent"
-          emojis={this.props.recent}
-          onCopy={(emoji, modifier) => this.onCopy(emoji, modifier, false)} />
+          emojis={recents}
+          onCopy={(name, variation, emoji) => this.onCopy(name, variation, emoji, false)} />
       </div>
     );
   }
@@ -100,19 +114,19 @@ class EmojiList extends React.Component {
             <Tab onClick={this.resetTooltip}>
               <FontAwesomeIcon icon={['far', 'clock']} /> Recent
             </Tab>
-            {Object.keys(categoryNames).map(category => (
+            {categoryOrder.map(category => (
               <Tab onClick={this.resetTooltip} key={category}>
-                <FontAwesomeIcon icon={categoryIcons[category]} /> {categoryNames[category]}
+                <FontAwesomeIcon icon={categoryIcons[category]} /> {category}
               </Tab>
             ))}
           </TabList>
           <TabPanel>
             {this.props.recent.length ? this.renderRecents() : this.renderEmptyRecents()}
           </TabPanel>
-          {Object.keys(categoryNames).map(category => (
+          {categoryOrder.map(category => (
             <TabPanel key={category}>
               <EmojiCategory
-                name={categoryNames[category]}
+                name={category}
                 emojis={emojiCategories[category]}
                 showModifiers={true}
                 onCopy={this.onCopy} />

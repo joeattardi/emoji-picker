@@ -8,7 +8,7 @@ export default function EmojiCategory({ name, emojis, onCopy, showModifiers }) {
           <Emoji
             emoji={emoji}
             showModifiers={showModifiers}
-            key={emoji.modifier ? `${emoji.emoji}-${emoji.modifier}` : emoji.emoji}
+            key={emoji.key}
             onCopy={onCopy} />
         ))}
       </div>

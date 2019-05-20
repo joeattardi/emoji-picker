@@ -1,4 +1,3 @@
-import { fitzpatrick_scale_modifiers, lib } from 'emojilib';
 import React from 'react';
 import Popup from 'reactjs-popup'
 import Clipboard from 'react-clipboard.js';
@@ -31,27 +30,37 @@ export default class Emoji extends React.Component {
       showPopup: false
     };
 
+    this.getCharSequence = this.getCharSequence.bind(this);
     this.hidePopup = this.hidePopup.bind(this);
     this.onClickBaseEmoji = this.onClickBaseEmoji.bind(this);
     this.onClickVariation = this.onClickVariation.bind(this);
+    this.renderPopup = this.renderPopup.bind(this);
   }
 
-  onClickBaseEmoji(emoji, modifier) {
-    if (lib[emoji].fitzpatrick_scale && this.props.showModifiers) {
+  getCharSequence(emoji) {
+    const chars = emoji.unified.split('-');
+    const codePoints = chars.map(char => parseInt(char, 16));
+    const charSequence = String.fromCodePoint(...codePoints);
+
+    return charSequence;
+  }
+
+  onClickBaseEmoji(emoji, variation, charSequence) {
+    if (emoji.skin_variations && this.props.showModifiers) {
       this.setState({
         showPopup: true
       });
     } else {
-      this.props.onCopy(emoji, modifier);
+      this.props.onCopy(emoji.short_name, variation, charSequence);
     }
   }
 
-  onClickVariation(emoji, modifier) {
+  onClickVariation(emoji, variation, charSequence) {
     this.setState({
       showPopup: false
     });
 
-    this.props.onCopy(emoji, modifier);
+    this.props.onCopy(emoji.short_name, variation, charSequence);
   }
 
   hidePopup() {
@@ -60,40 +69,49 @@ export default class Emoji extends React.Component {
     });
   }
 
+  renderPopup(emoji, charSequence) {
+    return (
+      <Popup
+        open={this.state.showPopup}
+        onClose={this.hidePopup}
+        contentStyle={{
+          width: 'auto',
+          padding: '0.5em'
+        }}>
+        <div>
+          <PopupHeader>Select a variation</PopupHeader>
+          <EmojiButton
+            data-clipboard-text={charSequence}
+            onClick={() => this.onClickVariation(emoji, null, charSequence)}>
+            {charSequence}
+          </EmojiButton>
+          {Object.keys(emoji.skin_variations).map(variation => (
+            <EmojiButton
+              key={`${emoji.short_name}-${variation}`}
+              data-clipboard-text={this.getCharSequence(emoji.skin_variations[variation])}
+              onClick={() => this.onClickVariation(emoji, variation, this.getCharSequence(emoji.skin_variations[variation]))}>
+              {this.getCharSequence(emoji.skin_variations[variation])}
+            </EmojiButton>
+          ))}
+        </div>
+      </Popup>
+    );
+  }
+
   render() {
     const { emoji } = this.props;
+
+    const charSequence = this.getCharSequence(emoji);
+
     return (
       <span>
         <EmojiButton
-          data-clipboard-text={emoji.modifier ? lib[emoji.emoji].char + emoji.modifier : lib[emoji.emoji].char}
-          data-tip={emoji.emoji}
-          onClick={() => this.onClickBaseEmoji(emoji.emoji, emoji.modifier)}>
-          {emoji.modifier ? lib[emoji.emoji].char + emoji.modifier : lib[emoji.emoji].char}
+          data-clipboard-text={charSequence}
+          data-tip={emoji.short_name}
+          onClick={() => this.onClickBaseEmoji(emoji, null, charSequence)}>
+          {charSequence}
         </EmojiButton>
-        <Popup
-          open={this.state.showPopup}
-          onClose={this.hidePopup}
-          contentStyle={{
-            width: 'auto',
-            padding: '0.5em'
-          }}>
-          <div>
-            <PopupHeader>Select a variation</PopupHeader>
-            <EmojiButton
-              data-clipboard-text={lib[emoji.emoji].char}
-              onClick={() => this.onClickVariation(emoji.emoji)}>
-              {lib[emoji.emoji].char}
-              </EmojiButton>
-            {fitzpatrick_scale_modifiers.map(modifier => (
-              <EmojiButton
-                key={`${emoji.emoji}-${modifier}`}
-                data-clipboard-text={lib[emoji.emoji].char + modifier}
-                onClick={() => this.onClickVariation(emoji.emoji, modifier)}>
-                {lib[emoji.emoji].char + modifier}
-              </EmojiButton>
-            ))}
-          </div>
-        </Popup>
+        {emoji.skin_variations ? this.renderPopup(emoji, charSequence) : null}
       </span>
     );
   }

@@ -105,11 +105,11 @@ export default class App extends React.Component {
     });
   }
   
-  onCopy(emoji, modifier) {
+  onCopy(name, variation, emoji) {
     this.setState({
       recent: [
-        { emoji, modifier },
-        ...this.state.recent.filter(e => e.emoji !== emoji || e.modifier !== modifier)
+        { name, variation, emoji },
+        ...this.state.recent.filter(e => e.name !== name || e.variation !== variation || e.emoji !== emoji)
       ].slice(0, RECENT_LENGTH)
     });
   }
