@@ -36,19 +36,10 @@ export default class Emoji extends React.Component {
       showPopup: false
     };
 
-    this.getCharSequence = this.getCharSequence.bind(this);
     this.hidePopup = this.hidePopup.bind(this);
     this.onClickBaseEmoji = this.onClickBaseEmoji.bind(this);
     this.onClickVariation = this.onClickVariation.bind(this);
     this.renderPopup = this.renderPopup.bind(this);
-  }
-
-  getCharSequence(emoji) {
-    const chars = emoji.unified.split('-');
-    const codePoints = chars.map(char => parseInt(char, 16));
-    const charSequence = String.fromCodePoint(...codePoints);
-
-    return charSequence;
   }
 
   onClickBaseEmoji(emoji, variation, charSequence) {
@@ -94,9 +85,9 @@ export default class Emoji extends React.Component {
           {emoji.variants.map(variant => (
             <EmojiButton
               key={variant.key}
-              data-clipboard-text={this.getCharSequence(variant)}
-              onClick={() => this.onClickVariation(emoji, variant.variation, this.getCharSequence(variant))}>
-              {this.getCharSequence(variant)}
+              data-clipboard-text={variant.emoji}
+              onClick={() => this.onClickVariation(emoji, variant.variation, variant.emoji)}>
+              {variant.emoji}
             </EmojiButton>
           ))}
         </div>
@@ -107,17 +98,15 @@ export default class Emoji extends React.Component {
   render() {
     const { emoji } = this.props;
 
-    const charSequence = this.getCharSequence(emoji);
-
     return (
       <>
         <EmojiButton
-          data-clipboard-text={charSequence}
+          data-clipboard-text={emoji.emoji}
           data-tip={emoji.name}
-          onClick={() => this.onClickBaseEmoji(emoji, null, charSequence)}>
-          {charSequence}
+          onClick={() => this.onClickBaseEmoji(emoji, null, emoji.emoji)}>
+          {emoji.emoji}
         </EmojiButton>
-        {emoji.variants ? this.renderPopup(emoji, charSequence) : null}
+        {emoji.variants ? this.renderPopup(emoji, emoji.emoji) : null}
       </>
     );
   }
