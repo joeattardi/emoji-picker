@@ -20,7 +20,11 @@ class EmojiSearchResults extends React.Component {
   }
 
   render() {
-    const searchResults = emojiData.filter(emoji => emoji.short_name.indexOf(this.props.searchQuery.toLowerCase()) >= 0);
+    const searchTerm = this.props.searchQuery.toLowerCase();
+    const searchResults = emojiData.filter(emoji => (
+      emoji.short_name.indexOf(searchTerm) >= 0 ||
+        emoji.short_names.find(short_name => short_name.indexOf(searchTerm) >= 0)
+    ));
 
     return (
       <div>
