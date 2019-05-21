@@ -3,6 +3,7 @@ import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { withToastManager } from 'react-toast-notifications';
 import ReactTooltip from 'react-tooltip';
+import styled from 'styled-components';
 
 import emojiData from './data/emoji.json';
 
@@ -40,6 +41,12 @@ const categoryIcons = {
   'Symbols': 'music',
   'Flags': ['far', 'flag']
 };
+
+const EmptyRecents = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 class EmojiList extends React.Component {
   constructor(props) {
@@ -89,10 +96,11 @@ class EmojiList extends React.Component {
 
   renderEmptyRecents() {
     return (
-      <div>
+      <EmptyRecents>
+        <FontAwesomeIcon size="4x" icon="history" />
         <h2>No recent emojis.</h2>
         <p>Emojis will be added here as you copy them.</p>
-      </div>
+      </EmptyRecents>
     );
   }
 

@@ -1,9 +1,17 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react';
+import styled from 'styled-components';
 import { withToastManager } from 'react-toast-notifications';
 
 import emojiData from './data/emoji.json';
 
 import Emoji from './Emoji';
+
+const NotFoundContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
 class EmojiSearchResults extends React.Component {
   constructor(props) {
@@ -20,6 +28,28 @@ class EmojiSearchResults extends React.Component {
     });
   }
 
+  renderSearchResults(searchResults) {
+    return (
+    <div>
+      {searchResults.map(emoji => (
+        <Emoji key={emoji.key} emoji={emoji} onCopy={this.onCopy} showModifiers={true} />
+      ))}
+    </div>
+    );
+  }
+
+  renderNotFound() {
+    return (
+      <NotFoundContainer>
+        <FontAwesomeIcon size="4x" icon={['far', 'frown-open']} />
+        <h2>No Emojis Found</h2>
+        <p>
+          No emojis were found matching <strong>{this.props.searchQuery}</strong>.
+        </p>
+      </NotFoundContainer>
+    );
+  }
+
   render() {
     const searchTerm = this.props.searchQuery.toLowerCase();
     const searchResults = emojiData.filter(emoji => (
@@ -29,9 +59,7 @@ class EmojiSearchResults extends React.Component {
 
     return (
       <div>
-        {searchResults.map(emoji => (
-          <Emoji key={emoji.key} emoji={emoji} onCopy={this.onCopy} showModifiers={true} />
-        ))}
+        {searchResults.length ? this.renderSearchResults(searchResults) : this.renderNotFound()}
       </div>
     );
   }

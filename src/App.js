@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBuilding, faClock, faFlag, faLightbulb, faSmile } from '@fortawesome/free-regular-svg-icons';
-import { faCat, faCoffee, faFutbol, faMusic, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faBuilding, faClock, faFlag, faFrownOpen, faLightbulb, faSmile } from '@fortawesome/free-regular-svg-icons';
+import { faCat, faCoffee, faFutbol, faHistory, faMusic, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import React from 'react';
 import 'react-tabs/style/react-tabs.css';
@@ -49,10 +49,6 @@ const Main = styled.main`
   margin: auto;
 `;
 
-const Instructions = styled.div`
-  margin: 1em;
-`;
-
 const ToastBody = styled.div`
   font-size: 1.5em;
   padding: 0.5em;
@@ -68,7 +64,7 @@ const CustomToast = ({ children }) => (
   </ToastBody>
 );
 
-library.add(faBuilding, faCat, faClock, faCoffee, faFlag, faFutbol, faLightbulb, faMusic, faSmile, faTrash);
+library.add(faBuilding, faCat, faClock, faCoffee, faFlag, faFrownOpen, faFutbol, faHistory, faLightbulb, faMusic, faSmile, faTrash);
 
 export default class App extends React.Component {
   constructor(props) {
@@ -135,9 +131,6 @@ export default class App extends React.Component {
           </Header>
           <Main>
             <Search onSearch={this.doSearch} />
-            <Instructions>
-              Click on an emoji to copy it to the clipboard.
-            </Instructions>
             {this.state.search ? <EmojiSearchResults searchQuery={this.state.search} onCopy={this.onCopy} /> : <EmojiList onCopy={this.onCopy} recent={this.state.recent} onClearRecent={this.clearRecent} />}
           </Main>
         </div>

@@ -73,7 +73,8 @@ export default class Emoji extends React.Component {
         onClose={this.hidePopup}
         contentStyle={{
           width: 'auto',
-          padding: '0.5em'
+          padding: '0.5em',
+          borderRadius: '5px'
         }}>
         <div>
           <PopupHeader>Select a variation</PopupHeader>

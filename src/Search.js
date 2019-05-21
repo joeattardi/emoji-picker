@@ -15,6 +15,7 @@ const SearchInput = styled.input.attrs({
   padding: 0.5em;
   border: 1px solid #999999;
   border-radius: 5px;
+  margin: 1em;
 `;
 
 export default function Search({ onSearch }) {
