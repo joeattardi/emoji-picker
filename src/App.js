@@ -37,16 +37,27 @@ const Header = styled.header`
   background: #666666;
   color: #FFFFFF;
   padding: 0.5em;
+  position: fixed;
+  width: 100%;
+  z-index: 999;
+  height: 2em;
+  line-height: 2em;
 
   h1 {
     margin: 0;
+    font-size: 1.2em;
   }
 `;
 
 const Main = styled.main`
   padding: 0.5em;
+  padding-top: 3em;
   max-width: 80em;
   margin: auto;
+`;
+
+const Content = styled.div`
+  margin-top: 6em;
 `;
 
 const ToastBody = styled.div`
@@ -131,7 +142,9 @@ export default class App extends React.Component {
           </Header>
           <Main>
             <Search onSearch={this.doSearch} />
-            {this.state.search ? <EmojiSearchResults searchQuery={this.state.search} onCopy={this.onCopy} /> : <EmojiList onCopy={this.onCopy} recent={this.state.recent} onClearRecent={this.clearRecent} />}
+            <Content>
+              {this.state.search ? <EmojiSearchResults searchQuery={this.state.search} onCopy={this.onCopy} /> : <EmojiList onCopy={this.onCopy} recent={this.state.recent} onClearRecent={this.clearRecent} />}
+            </Content>
           </Main>
         </div>
       </ToastProvider>

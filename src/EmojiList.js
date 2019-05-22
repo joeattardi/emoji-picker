@@ -48,6 +48,44 @@ const EmptyRecents = styled.div`
   align-items: center;
 `;
 
+const Container = styled.div`
+  .react-tabs__tab {
+    background: transparent;
+    border-radius: 0;
+    border: none;
+  }
+
+  .react-tabs__tab-list {
+    border: none;
+    font-size: 2em;
+    height: calc(2em + 10px);
+    color: #999999;
+    background: #FFFFFF;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+  }
+
+  .react-tabs__tab-panel {
+    padding-top: calc(4em + 10px);
+  }
+
+  .react-tabs__tab--selected {
+    color: #ACD7EC;
+    border-bottom: 5px solid #ACD7EC;
+  }
+
+  @media (max-width: 700px) {
+    .react-tabs__tab-list {
+      font-size: 1em;
+    }
+    
+    .react-tabs__tab-panel {
+      padding-top: calc(2em + 10px);
+    }
+  }
+`;
+
 class EmojiList extends React.Component {
   constructor(props) {
     super(props);
@@ -97,7 +135,7 @@ class EmojiList extends React.Component {
   renderEmptyRecents() {
     return (
       <EmptyRecents>
-        <FontAwesomeIcon size="4x" icon="history" />
+        <FontAwesomeIcon size="4x" icon={['far', 'clock']} />
         <h2>No recent emojis.</h2>
         <p>Emojis will be added here as you copy them.</p>
       </EmptyRecents>
@@ -106,15 +144,15 @@ class EmojiList extends React.Component {
 
   render() {
     return (
-      <div>
+      <Container>
         <Tabs defaultIndex={1}>
           <TabList>
-            <Tab onClick={this.resetTooltip}>
-              <FontAwesomeIcon icon={['far', 'clock']} /> Recent
+            <Tab onClick={this.resetTooltip} data-tip="Recent">
+              <FontAwesomeIcon icon={['far', 'clock']} />
             </Tab>
             {categoryOrder.map(category => (
               <Tab onClick={this.resetTooltip} key={category}>
-                <FontAwesomeIcon icon={categoryIcons[category]} /> {category}
+                <FontAwesomeIcon icon={categoryIcons[category]} data-tip={category} />
               </Tab>
             ))}
           </TabList>
@@ -131,7 +169,7 @@ class EmojiList extends React.Component {
             </TabPanel>
           ))}
         </Tabs>
-      </div>
+      </Container>
     );
   }
 }

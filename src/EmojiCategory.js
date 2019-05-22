@@ -1,9 +1,15 @@
 import React from 'react';
+import styled from 'styled-components';
+
 import Emoji from './Emoji';
+
+const Container = styled.div`
+
+`;
 
 export default function EmojiCategory({ name, emojis, onCopy, showModifiers }) {
   return (
-      <div>
+      <Container>
         {emojis.map(emoji => (
           <Emoji
             emoji={emoji}
@@ -11,6 +17,6 @@ export default function EmojiCategory({ name, emojis, onCopy, showModifiers }) {
             key={emoji.key}
             onCopy={onCopy} />
         ))}
-      </div>
+      </Container>
   );
 }
