@@ -33,7 +33,7 @@ export default class RecentEmoji extends React.Component {
   renderRecents() {
     const recents = this.props.recent.map(recent => {
       const recentEmoji = emojiData.find(data => data.name === recent.name);
-      return recent.variation ? recentEmoji.variants.find(variant => variant.variation === recent.variation) : recentEmoji;
+      return recent.variation ? recentEmoji.variants[recent.variation] : recentEmoji;
     });
 
     return (
@@ -44,7 +44,7 @@ export default class RecentEmoji extends React.Component {
         <EmojiCategory
           name="Recent"
           emojis={recents}
-          onCopy={(name, variation, emoji) => this.props.onCopy(name, variation, emoji, false)} />
+          onCopy={(emoji, variation) => this.props.onCopy(emoji, variation, false)} />
       </RecentsContainer>
     );
   }

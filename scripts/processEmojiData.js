@@ -19,14 +19,23 @@ const newEmojiData = rawData.map(emojiItem => {
   };
 
   if (emojiItem.skin_variations) {
-    newData.variants = Object.keys(emojiItem.skin_variations).map(variation => (
-      {
+    // newData.variants = Object.keys(emojiItem.skin_variations).map(variation => (
+    //   {
+    //     name: emojiItem.short_name,
+    //     key: `${emojiItem.short_name}-${variation}`,
+    //     emoji: getEmoji(emojiItem.skin_variations[variation].unified),
+    //     variation
+    //   }
+    // ));
+
+    newData.variants = {};
+    Object.keys(emojiItem.skin_variations).forEach(variation => {
+      newData.variants[variation] = {
         name: emojiItem.short_name,
         key: `${emojiItem.short_name}-${variation}`,
-        emoji: getEmoji(emojiItem.skin_variations[variation].unified),
-        variation
-      }
-    ));
+        emoji: getEmoji(emojiItem.skin_variations[variation].unified)
+      };
+    });
   }
 
   return newData;

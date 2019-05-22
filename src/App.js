@@ -69,16 +69,12 @@ export default class App extends React.Component {
         });
       }
     } catch (e) {}
-
-    window.addEventListener('beforeunload', () => {
-      localStorage.setItem(RECENT_KEY, JSON.stringify(this.state.recent));
-    });
   }
 
   clearRecent() {
     this.setState({
       recent: []
-    });
+    }, () => localStorage.removeItem(RECENT_KEY));
   }
   
   showNotification(emoji) {
@@ -95,16 +91,16 @@ export default class App extends React.Component {
     });
   }
 
-  onCopy(name, variation, emoji, addToRecents = true) {
-    this.showNotification(emoji);
+  onCopy(emoji, variation, addToRecents = true) {
+    this.showNotification(variation ? emoji.variants[variation].emoji : emoji.emoji);
 
     if (addToRecents) {
       this.setState({
         recent: [
-          { name, variation, emoji },
-          ...this.state.recent.filter(e => e.name !== name || e.variation !== variation || e.emoji !== emoji)
+          { name: emoji.name, variation },
+          ...this.state.recent.filter(e => e.name !== emoji.name || e.variation !== variation)
         ].slice(0, RECENT_LENGTH)
-      });
+      }, () => localStorage.setItem(RECENT_KEY, JSON.stringify(this.state.recent)));
     }
   }
 

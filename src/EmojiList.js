@@ -95,8 +95,8 @@ export default class EmojiList extends React.Component {
     this.onCopy = this.onCopy.bind(this);
   }
 
-  onCopy(name, variation, emoji, addToRecents = true) {
-    this.props.onCopy(name, variation, emoji, addToRecents);
+  onCopy(emoji, variation, addToRecents = true) {
+    this.props.onCopy(emoji, variation, addToRecents);
   }
 
   resetTooltip() {
