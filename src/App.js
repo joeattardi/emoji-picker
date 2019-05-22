@@ -1,16 +1,16 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBuilding, faClock, faFlag, faFrownOpen, faLightbulb, faSmile } from '@fortawesome/free-regular-svg-icons';
-import { faCat, faCoffee, faFutbol, faHistory, faMusic, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { library } from '@fortawesome/fontawesome-svg-core';
 import React from 'react';
 import 'react-tabs/style/react-tabs.css';
-import { ToastProvider } from 'react-toast-notifications';
 import ReactTooltip from 'react-tooltip';
 import styled, { createGlobalStyle } from 'styled-components';
 
 import EmojiList from './EmojiList';
 import EmojiSearchResults from './EmojiSearchResults';
+import Footer from './Footer';
+import Header from './Header';
+import Notifications from './Notifications';
 import Search from './Search';
+
+import './icons';
 
 const RECENT_LENGTH = 25;
 const RECENT_KEY = 'recentEmojis';
@@ -23,8 +23,8 @@ const GlobalStyle = createGlobalStyle`
 
   button {
     background: #9FB7DF;
-    padding: 0.5em;
-    font-size: 0.8em;
+    padding: 0.5em 0.75em;
+    font-size: 1em;
     border-radius: 3px;
     cursor: pointer;
     font-weight: bold;
@@ -33,49 +33,17 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const Header = styled.header`
-  background: #666666;
-  color: #FFFFFF;
-  padding: 0.5em;
-  position: fixed;
-  width: 100%;
-  z-index: 999;
-  height: 2em;
-  line-height: 2em;
-
-  h1 {
-    margin: 0;
-    font-size: 1.2em;
-  }
-`;
-
 const Main = styled.main`
   padding: 0.5em;
-  padding-top: 3em;
+  padding-top: 4em;
   max-width: 80em;
   margin: auto;
+  position: relative;
 `;
 
 const Content = styled.div`
   margin-top: 6em;
 `;
-
-const ToastBody = styled.div`
-  font-size: 1.5em;
-  padding: 0.5em;
-  border-radius: 5px;
-  background: rgba(0, 0, 0, 0.6);
-  margin: 0.25em;
-  color: #FFFFFF;
-`;
-
-const CustomToast = ({ children }) => (
-  <ToastBody>
-    {children}
-  </ToastBody>
-);
-
-library.add(faBuilding, faCat, faClock, faCoffee, faFlag, faFrownOpen, faFutbol, faHistory, faLightbulb, faMusic, faSmile, faTrash);
 
 export default class App extends React.Component {
   constructor(props) {
@@ -83,7 +51,8 @@ export default class App extends React.Component {
 
     this.state = {
       search: '',
-      recent: []
+      recent: [],
+      notifications: []
     };
 
     this.clearRecent = this.clearRecent.bind(this);
@@ -112,13 +81,31 @@ export default class App extends React.Component {
     });
   }
   
-  onCopy(name, variation, emoji) {
+  showNotification(emoji) {
+    const newNotification = {emoji, timestamp: Date.now()};
     this.setState({
-      recent: [
-        { name, variation, emoji },
-        ...this.state.recent.filter(e => e.name !== name || e.variation !== variation || e.emoji !== emoji)
-      ].slice(0, RECENT_LENGTH)
+      notifications: [
+        newNotification,
+        ...this.state.notifications
+      ]
+    }, () => {
+      setTimeout(() => {
+        this.setState({ notifications: this.state.notifications.filter(notification => notification !== newNotification) });
+      }, 3000);
     });
+  }
+
+  onCopy(name, variation, emoji, addToRecents = true) {
+    this.showNotification(emoji);
+
+    if (addToRecents) {
+      this.setState({
+        recent: [
+          { name, variation, emoji },
+          ...this.state.recent.filter(e => e.name !== name || e.variation !== variation || e.emoji !== emoji)
+        ].slice(0, RECENT_LENGTH)
+      });
+    }
   }
 
   doSearch(searchQuery) {
@@ -133,21 +120,21 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <ToastProvider placement="top-center" autoDismissTimeout={2000} components={{ Toast: CustomToast }}>
-        <ReactTooltip effect="solid" />
+      <>
+      <Notifications notifications={this.state.notifications} />
+      <ReactTooltip effect="solid" />
         <div>
           <GlobalStyle />
-          <Header>
-            <h1><FontAwesomeIcon icon={['far', 'smile']} /> Emoji Picker</h1>
-          </Header>
+          <Header />
           <Main>
             <Search onSearch={this.doSearch} />
             <Content>
               {this.state.search ? <EmojiSearchResults searchQuery={this.state.search} onCopy={this.onCopy} /> : <EmojiList onCopy={this.onCopy} recent={this.state.recent} onClearRecent={this.clearRecent} />}
             </Content>
           </Main>
+          <Footer />
         </div>
-      </ToastProvider>
+      </>
     );
   }
 }

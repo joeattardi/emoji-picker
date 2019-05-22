@@ -7,17 +7,32 @@ const EmojiButton = styled(Clipboard).attrs({
   component: 'a'
 })`
   display: inline-block;
-  width: 1em;
+  width: 1.5em;
+  height: 1.5em;
+  text-align: center;
   cursor: pointer;
   background: transparent;
   border: none;
-  font-size: 2em;
-  transition: transform 0.1s;
+  font-size: 2.5em;
   padding: 0;
-  margin: 0 0.25em 0.25em 0.25em;
+  z-index: 800;
+  line-height: 1.6em;
 
   &:hover {
-    transform: scale(2);
+    background: #E8F4F9;
+    border-radius: 5px;
+  }
+
+  &.popup {
+  }
+`;
+
+const VariantGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+
+  @media (max-width: 700px) {
+    grid-template-columns: repeat(3, 1fr);
   }
 `;
 
@@ -26,6 +41,11 @@ const PopupHeader = styled.h2`
   font-size: 1em;
   text-align: center;
   margin-bottom: 1em;
+`;
+
+const PopupButtonContainer = styled.div`
+  text-align: center;
+  margin: 1em;
 `;
 
 export default class Emoji extends React.Component {
@@ -78,19 +98,26 @@ export default class Emoji extends React.Component {
         }}>
         <div>
           <PopupHeader>Select a variation</PopupHeader>
-          <EmojiButton
-            data-clipboard-text={charSequence}
-            onClick={() => this.onClickVariation(emoji, null, charSequence)}>
-            {charSequence}
-          </EmojiButton>
-          {emoji.variants.map(variant => (
+          <VariantGrid>
             <EmojiButton
-              key={variant.key}
-              data-clipboard-text={variant.emoji}
-              onClick={() => this.onClickVariation(emoji, variant.variation, variant.emoji)}>
-              {variant.emoji}
+              className="popup"
+              data-clipboard-text={charSequence}
+              onClick={() => this.onClickVariation(emoji, null, charSequence)}>
+              {charSequence}
             </EmojiButton>
-          ))}
+            {emoji.variants.map(variant => (
+              <EmojiButton
+                className="popup"
+                key={variant.key}
+                data-clipboard-text={variant.emoji}
+                onClick={() => this.onClickVariation(emoji, variant.variation, variant.emoji)}>
+                {variant.emoji}
+              </EmojiButton>
+            ))}
+          </VariantGrid>
+          <PopupButtonContainer>
+            <button onClick={this.hidePopup}>Cancel</button>
+          </PopupButtonContainer>
         </div>
       </Popup>
     );

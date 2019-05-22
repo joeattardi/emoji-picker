@@ -1,13 +1,13 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import { withToastManager } from 'react-toast-notifications';
 import ReactTooltip from 'react-tooltip';
 import styled from 'styled-components';
 
 import emojiData from './data/emoji.json';
 
 import EmojiCategory from './EmojiCategory';
+import RecentEmoji from './RecentEmoji';
 
 const emojiCategories = {};
 
@@ -42,28 +42,30 @@ const categoryIcons = {
   'Flags': ['far', 'flag']
 };
 
-const EmptyRecents = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 const Container = styled.div`
   .react-tabs__tab {
-    background: transparent;
     border-radius: 0;
     border: none;
+    transition: transform 0.1s;
+
+    &:hover {
+      transform: scale(1.2);
+    }
   }
 
   .react-tabs__tab-list {
     border: none;
     font-size: 2em;
-    height: calc(2em + 10px);
     color: #999999;
     background: #FFFFFF;
     text-align: center;
     position: fixed;
+    display: flex;
+    justify-content: center;
+    left: 0;
     width: 100%;
+    padding-bottom: 10px;
+    z-index: 900;
   }
 
   .react-tabs__tab-panel {
@@ -86,60 +88,19 @@ const Container = styled.div`
   }
 `;
 
-class EmojiList extends React.Component {
+export default class EmojiList extends React.Component {
   constructor(props) {
     super(props);
 
     this.onCopy = this.onCopy.bind(this);
-    this.showToast = this.showToast.bind(this);
   }
 
-  onCopy(name, variation, emoji, propagate = true) {
-    this.showToast(emoji);
-
-    if (propagate) {
-      this.props.onCopy(name, variation, emoji);
-    }
-  }
-
-  showToast(emoji) {
-    this.props.toastManager.add(`${emoji} copied to clipboard!`, { 
-      appearance: 'success',
-      autoDismiss: true
-    });
+  onCopy(name, variation, emoji, addToRecents = true) {
+    this.props.onCopy(name, variation, emoji, addToRecents);
   }
 
   resetTooltip() {
     setTimeout(() => ReactTooltip.rebuild());
-  }
-
-  renderRecents() {
-    const recents = this.props.recent.map(recent => {
-      const recentEmoji = emojiData.find(data => data.name === recent.name);
-      return recent.variation ? recentEmoji.variants.find(variant => variant.variation === recent.variation) : recentEmoji;
-    });
-
-    return (
-      <div>
-        <button onClick={this.props.onClearRecent}>
-          <FontAwesomeIcon icon="trash" /> Clear Recent Emojis
-        </button>
-        <EmojiCategory
-          name="Recent"
-          emojis={recents}
-          onCopy={(name, variation, emoji) => this.onCopy(name, variation, emoji, false)} />
-      </div>
-    );
-  }
-
-  renderEmptyRecents() {
-    return (
-      <EmptyRecents>
-        <FontAwesomeIcon size="4x" icon={['far', 'clock']} />
-        <h2>No recent emojis.</h2>
-        <p>Emojis will be added here as you copy them.</p>
-      </EmptyRecents>
-    );
   }
 
   render() {
@@ -157,7 +118,7 @@ class EmojiList extends React.Component {
             ))}
           </TabList>
           <TabPanel>
-            {this.props.recent.length ? this.renderRecents() : this.renderEmptyRecents()}
+            <RecentEmoji onCopy={this.onCopy} recent={this.props.recent} onClearRecent={this.props.onClearRecent} />
           </TabPanel>
           {categoryOrder.map(category => (
             <TabPanel key={category}>
@@ -173,5 +134,3 @@ class EmojiList extends React.Component {
     );
   }
 }
-
-export default withToastManager(EmojiList);

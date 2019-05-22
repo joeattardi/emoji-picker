@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react';
 import styled from 'styled-components';
-import { withToastManager } from 'react-toast-notifications';
 
 import emojiData from './data/emoji.json';
 
@@ -13,7 +12,14 @@ const NotFoundContainer = styled.div`
   align-items: center;
 `;
 
-class EmojiSearchResults extends React.Component {
+const ResultsContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 4em);
+  justify-content: center;
+  align-self: stretch;
+`;
+
+export default class EmojiSearchResults extends React.Component {
   constructor(props) {
     super(props);
 
@@ -22,19 +28,15 @@ class EmojiSearchResults extends React.Component {
 
   onCopy(name, variation, emoji) {
     this.props.onCopy(name, variation, emoji);
-    this.props.toastManager.add(`${emoji} copied to clipboard!`, { 
-      appearance: 'success',
-      autoDismiss: true
-    });
   }
 
   renderSearchResults(searchResults) {
     return (
-    <div>
+    <ResultsContainer>
       {searchResults.map(emoji => (
         <Emoji key={emoji.key} emoji={emoji} onCopy={this.onCopy} showModifiers={true} />
       ))}
-    </div>
+    </ResultsContainer>
     );
   }
 
@@ -42,7 +44,7 @@ class EmojiSearchResults extends React.Component {
     return (
       <NotFoundContainer>
         <FontAwesomeIcon size="4x" icon={['far', 'frown-open']} />
-        <h2>No Emojis Found</h2>
+        <h2>No emojis found.</h2>
         <p>
           No emojis were found matching <strong>{this.props.searchQuery}</strong>.
         </p>
@@ -64,5 +66,3 @@ class EmojiSearchResults extends React.Component {
     );
   }
 }
-
-export default withToastManager(EmojiSearchResults);
