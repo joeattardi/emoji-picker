@@ -1,4 +1,6 @@
 import React from 'react';
+import { SnackbarManager } from 'react-snackbar-alert';
+import 'react-snackbar-alert/styles/react-snackbar-alert.css';
 import 'react-tabs/style/react-tabs.css';
 import ReactTooltip from 'react-tooltip';
 import styled, { createGlobalStyle } from 'styled-components';
@@ -7,7 +9,6 @@ import EmojiList from './EmojiList';
 import EmojiSearchResults from './EmojiSearchResults';
 import Footer from './Footer';
 import Header from './Header';
-import Notifications from './Notifications';
 import Search from './Search';
 
 import './icons';
@@ -51,9 +52,10 @@ export default class App extends React.Component {
 
     this.state = {
       search: '',
-      recent: [],
-      notifications: []
+      recent: []
     };
+
+    this.snackbarManager = React.createRef();
 
     this.clearRecent = this.clearRecent.bind(this);
     this.doSearch = this.doSearch.bind(this);
@@ -78,16 +80,8 @@ export default class App extends React.Component {
   }
   
   showNotification(emoji) {
-    const newNotification = {emoji, timestamp: Date.now()};
-    this.setState({
-      notifications: [
-        newNotification,
-        ...this.state.notifications
-      ]
-    }, () => {
-      setTimeout(() => {
-        this.setState({ notifications: this.state.notifications.filter(notification => notification !== newNotification) });
-      }, 3000);
+    this.snackbarManager.current.create({
+      message: `${emoji} copied to clipboard`
     });
   }
 
@@ -117,7 +111,7 @@ export default class App extends React.Component {
   render() {
     return (
       <>
-      <Notifications notifications={this.state.notifications} />
+      <SnackbarManager ref={this.snackbarManager} />
       <ReactTooltip effect="solid" />
         <div>
           <GlobalStyle />
