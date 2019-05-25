@@ -46,7 +46,7 @@ const Container = styled.div`
   .react-tabs__tab {
     border-radius: 0;
     border: none;
-    transition: transform 0.1s;
+    transition: transform 0.1s, color 0.2s, border 0.2s;
 
     &:hover {
       transform: scale(1.2);
