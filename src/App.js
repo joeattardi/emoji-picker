@@ -9,6 +9,7 @@ import EmojiList from './EmojiList';
 import EmojiSearchResults from './EmojiSearchResults';
 import Footer from './Footer';
 import Header from './Header';
+import Notification from './Notification';
 import Search from './Search';
 
 import './icons';
@@ -81,7 +82,9 @@ export default class App extends React.Component {
   
   showNotification(emoji) {
     this.snackbarManager.current.create({
-      message: `${emoji} copied to clipboard`
+      data: {
+        emoji
+      }
     });
   }
 
@@ -111,7 +114,7 @@ export default class App extends React.Component {
   render() {
     return (
       <>
-      <SnackbarManager ref={this.snackbarManager} />
+      <SnackbarManager ref={this.snackbarManager} component={Notification} />
       <ReactTooltip effect="solid" />
         <div>
           <GlobalStyle />
