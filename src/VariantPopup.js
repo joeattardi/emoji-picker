@@ -1,4 +1,5 @@
 import React from 'react';
+import { wrapComponent } from 'react-snackbar-alert';
 import Popup from 'reactjs-popup'
 import styled from 'styled-components';
 
@@ -25,7 +26,7 @@ const PopupButtonContainer = styled.div`
   margin: 1em;
 `;
 
-export default class VariantPopup extends React.Component {
+class VariantPopup extends React.Component {
   constructor(props) {
     super(props);
 
@@ -35,6 +36,12 @@ export default class VariantPopup extends React.Component {
   onClickVariation(emoji, variation) {
     this.props.onClose();
     this.props.onCopy(emoji, variation);
+
+    this.props.createSnackbar({
+      data: {
+        emoji: variation ? emoji.variants[variation].emoji : emoji.emoji
+      }
+    });
   }
 
   render() {
@@ -76,3 +83,5 @@ export default class VariantPopup extends React.Component {
     );
   }
 }
+
+export default wrapComponent(VariantPopup);
