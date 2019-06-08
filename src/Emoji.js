@@ -1,9 +1,10 @@
 import React from 'react';
+import { wrapComponent } from 'react-snackbar-alert';
 
 import EmojiButton from './EmojiButton';
 import VariantPopup from './VariantPopup';
 
-export default class Emoji extends React.Component {
+class Emoji extends React.Component {
   constructor(props) {
     super(props);
 
@@ -21,6 +22,12 @@ export default class Emoji extends React.Component {
         showPopup: true
       });
     } else {
+      this.props.createSnackbar({
+        data: {
+          emoji: emoji.emoji
+        }
+      });
+
       this.props.onCopy(emoji, variation);
     }
   }
@@ -52,3 +59,5 @@ export default class Emoji extends React.Component {
     );
   }
 }
+
+export default wrapComponent(Emoji);

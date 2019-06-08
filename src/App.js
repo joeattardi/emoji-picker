@@ -1,6 +1,5 @@
 import React from 'react';
-import { SnackbarManager } from 'react-snackbar-alert';
-import 'react-snackbar-alert/styles/react-snackbar-alert.css';
+import { SnackbarProvider } from 'react-snackbar-alert';
 import 'react-tabs/style/react-tabs.css';
 import ReactTooltip from 'react-tooltip';
 import styled, { createGlobalStyle } from 'styled-components';
@@ -56,8 +55,6 @@ export default class App extends React.Component {
       recent: []
     };
 
-    this.snackbarManager = React.createRef();
-
     this.clearRecent = this.clearRecent.bind(this);
     this.doSearch = this.doSearch.bind(this);
     this.onCopy = this.onCopy.bind(this);
@@ -79,18 +76,8 @@ export default class App extends React.Component {
       recent: []
     }, () => localStorage.removeItem(RECENT_KEY));
   }
-  
-  showNotification(emoji) {
-    this.snackbarManager.current.create({
-      data: {
-        emoji
-      }
-    });
-  }
 
   onCopy(emoji, variation, addToRecents = true) {
-    this.showNotification(variation ? emoji.variants[variation].emoji : emoji.emoji);
-
     if (addToRecents) {
       this.setState({
         recent: [
@@ -113,9 +100,8 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <>
-      <SnackbarManager ref={this.snackbarManager} component={Notification} />
-      <ReactTooltip effect="solid" />
+      <SnackbarProvider component={Notification}>
+        <ReactTooltip effect="solid" />
         <div>
           <GlobalStyle />
           <Header />
@@ -127,7 +113,7 @@ export default class App extends React.Component {
           </Main>
           <Footer />
         </div>
-      </>
+      </SnackbarProvider>
     );
   }
 }
