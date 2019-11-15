@@ -15,6 +15,7 @@ const EmojiButton = styled(Clipboard).attrs({
   padding: 0;
   z-index: 800;
   line-height: 1.6em;
+  font-family: "Segoe UI Emoji", "Segoe UI Symbol", "Segoe UI", "Apple Color Emoji", "Twemoji Mozilla", "Noto Color Emoji", "EmojiOne Color", "Android Emoji";
 
   &:hover {
     background: #E8F4F9;
